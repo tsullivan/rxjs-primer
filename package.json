@@ -5,12 +5,15 @@
   "private": true,
   "license": "MIT",
   "scripts": {
+    "dev": "watchify index.js -o bundle.js",
     "build": "browserify index.js > bundle.js",
     "test": "npm run build"
   },
   "dependencies": {
     "level": "~5.0.1",
-    "rxjs": "^6.5.2"
+    "nodemon": "^1.19.1",
+    "rxjs": "^6.5.2",
+    "watchify": "^3.11.1"
   },
   "devDependencies": {
     "browserify": "^16.2.3",

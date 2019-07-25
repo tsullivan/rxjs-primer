@@ -9,7 +9,13 @@ async function main () {
   const myObservable = fromEvent(button, 'click');
 
   // for now, let's just log the event on each click
-  const subscription = myObservable.subscribe(event => console.log(event));
+  var clicks = 5;
+  const subscription = myObservable.subscribe(event => {
+    console.log(event);
+    if (--clicks === 0) {
+      subscription.unsubscribe();
+    }
+  });
 }
 
 test();

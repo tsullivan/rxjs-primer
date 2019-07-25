@@ -15,13 +15,14 @@ function runBuild() {
   }
 
   const b = browserify({
-    entries: ['src/index.js'],
+    entries: ['src/index.js', 'src/test.js'],
     cache: {},
     packageCache: {},
     plugin: [watchify]
   });
 
   b.on('update', bundle);
+  b.on('log', console.log);
   bundle();
 
 }

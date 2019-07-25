@@ -1,25 +1,24 @@
-const { test } = require("./test");
-const { fromEvent } = require("rxjs");
+import { test } from './test';
+test();
 
-async function main () {
-  // grab button reference, ok
-  const button = document.getElementById("myButton");
-  if (!button) {
-    return;
-  }
+import { combineLatest, of } from 'rxjs';
+import { map, filter, take, shareReplay } from 'rxjs/operators'; // eslint-disable-line
 
-  // create an observable of button clicks
-  const myObservable = fromEvent(button, "click");
+async function main(): Promise<void> {
+  const dataSource1 = of(100);
+  const dataSource2 = of(8, 6, 5, 4, 3, 2);
 
-  // for now, let's just log the event on each click
-  var clicks: number = 5;
-  const subscription = myObservable.subscribe((event: MouseEvent) => {
-    console.log(event);
-    if (--clicks === 0) {
-      subscription.unsubscribe();
-    }
+  const source = combineLatest(dataSource1, dataSource2)
+    .pipe(take(3))
+    .pipe(shareReplay());
+
+  source.subscribe(([i1, i2]: [number, number]): void => {
+    console.log(i1 + i2);
+  });
+
+  source.subscribe(([i1, i2]: [number, number]): void => {
+    console.log([i1, i2]);
   });
 }
 
-test();
 main();

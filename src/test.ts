@@ -1,5 +1,4 @@
-// @ts-ignore
-import * as level from "level";
+const level = require("level");
 
 export async function test() {
   const db = level("learnrxjs");

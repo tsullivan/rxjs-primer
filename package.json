@@ -4,23 +4,33 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "test": "i am live!",
-    "tsc": "tsc",
-    "tsc:w": "tsc -w",
+    "build": "browserify src/index.ts -p [ tsify -p tsconfig.json ] -o public/bundle.js",
+    "watchify": "watchify src/index.ts -p [tsify -p tsconfig.json ] -o public/bundle.js",
     "lite": "lite-server --baseDir=\"public\"",
-    "start": "concurrently \"npm run tsc:w\" \"npm run lite\" "
+    "start": "concurrently \"npm run watchify\" \"npm run lite\" "
   },
-  "dependencies": {
-    "level": "~5.0.1",
-    "rxjs": "^6.5.2",
-    "typescript": "^3.5.3"
+  "prettier": {
+    "printWidth": 88,
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "parser": "typescript"
   },
   "devDependencies": {
+    "@types/node": "^12.6.8",
+    "@typescript-eslint/eslint-plugin": "^1.6.0",
+    "@typescript-eslint/parser": "^1.13.0",
+    "browserify": "^16.3.0",
     "concurrently": "^4.1.1",
     "eslint": "^6.1.0",
+    "eslint-config-prettier": "^4.1.0",
+    "eslint-plugin-prettier": "^3.0.1",
+    "level": "~5.0.1",
     "lite-server": "^2.5.3",
-    "tsc-watch": "^2.2.1",
-    "typescript-eslint-parser": "^22.0.0"
+    "prettier": "^1.14.3",
+    "rxjs": "^6.5.2",
+    "tsify": "^4.0.1",
+    "typescript": "^3.5.3",
+    "watchify": "^3.11.1"
   },
   "engines": {
     "node": ">=8"

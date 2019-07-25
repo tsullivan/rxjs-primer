@@ -1,5 +1,5 @@
-import { test } from "./test";
-import { fromEvent } from "rxjs";
+const { test } = require("./test");
+const { fromEvent } = require("rxjs");
 
 async function main () {
   // grab button reference, ok
@@ -12,8 +12,8 @@ async function main () {
   const myObservable = fromEvent(button, "click");
 
   // for now, let's just log the event on each click
-  var clicks = 5;
-  const subscription = myObservable.subscribe(event => {
+  var clicks: number = 5;
+  const subscription = myObservable.subscribe((event: MouseEvent) => {
     console.log(event);
     if (--clicks === 0) {
       subscription.unsubscribe();

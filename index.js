@@ -1,18 +1,43 @@
-const level = require('level');
-const { fromEvent } = require('rxjs');
+const fs = require('fs');
+const browserify = require('browserify');
+const watchify = require('watchify');
 
-async function main () {
-  const db = level('browserify-starter');
-  const output = document.getElementById('output');
+const finalhandler = require('finalhandler')
+const http = require('http')
+const serveStatic = require('serve-static')
 
-  await db.put('beep', 'boooooop');
-  output.textContent = await db.get('beep');
+function runBuild() {
+  function bundle() {
+    b.bundle()
+      .on('error', console.error)
+      .pipe(fs.createWriteStream('public/bundle.js'))
+    ;
+  }
 
-  // grab button reference, ok
-  const button = document.getElementById('myButton');
+  const b = browserify({
+    entries: ['src/index.js'],
+    cache: {},
+    packageCache: {},
+    plugin: [watchify]
+  });
 
-  // create an observable of button clicks
-  const myObservable = fromEvent(button, 'click');
+  b.on('update', bundle);
+  bundle();
+
 }
 
-main();
+function runStaticServer() {
+  // Serve up public/ftp folder
+  const serve = serveStatic('public', { 'index': ['index.html'] })
+
+  // Create server
+  const server = http.createServer(function onRequest (req, res) {
+    serve(req, res, finalhandler(req, res))
+  })
+
+  // Listen
+  server.listen(9090)
+}
+
+runBuild();
+runStaticServer();
